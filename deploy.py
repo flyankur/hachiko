@@ -1,3 +1,8 @@
+'''
+Hachiko - A very simple continous integration app built on Flask
+https://github.com/flyankur/hachiko
+'''
+
 from flask import Flask,g, request
 import os, sys
 import json
