@@ -3,6 +3,7 @@ Hachiko - A very simple continous integration app built on Flask
 https://github.com/flyankur/hachiko
 '''
 
+from raven.contrib.flask import Sentry
 from flask import Flask,g, request
 import os, sys
 import json
@@ -38,11 +39,11 @@ def add_entry(form):
 	'message':form['message'],
         })
 
-@app.route('/eys',methods=['POST'])
+@app.route('/pull',methods=['POST'])
 def foo():
-   try:
-	data = json.loads(request.form['payload'])
-	if data['ref'] == 'refs/heads/master':
+    try:
+        data = json.loads(request.form['payload'])
+        if data['ref'] == 'refs/heads/development':
 		form_to = {}
    		form_to['committer']=format(data['commits'][0]['author']['name'])
 		form_to['before']=format(data['before'])
@@ -50,10 +51,20 @@ def foo():
 		form_to['timestamp']=format(data['commits'][0]['timestamp'])
 		form_to['message']=format(data['commits'][0]['message'])
 		form_to['pull_time']=format(datetime.now())
-		add_entry(form_to)
-		call(['deploy_scripts/eys.sh'])
-   	return "OK"
-   except Exception as e:
+            	add_entry(form_to)
+            	try:
+			if data['repository']['url'] == 'https://github.com/pixpa/studio':
+				file_to_execute = '/home/experiments/hachiku/studio.sh'
+			elif data['repository']['url'] == 'https://github.com/pixpa/sarjak':
+				file_to_execute = '/home/experiments/hachiku/sarjak.sh'
+			elif data['repository']['url'] == 'https://github.com/pixpa/pixpa.com':
+				file_to_execute = '/home/experiments/hachiku/pixpa.com.sh'
+                	with open(file_to_exectue):
+                		call([file_to_execute])
+            	except IOError:
+                	raise Exception('Oh dear. You need to copy dummy deploye script in deploy_script folder ( eys.sh ) as deploy.sh in root folder')
+        return "OK"
+    except Exception as e:
 	print e
 	return "Not Ok"
 
