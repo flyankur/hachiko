@@ -14,6 +14,9 @@ from subprocess import call
 app = Flask(__name__)
 DATABASE = 'deploy.json'
 
+app.config['SENTRY_DSN'] = 'http://9e5c9bcbe19a489ba3d2a908ca6a1faf:a47b3d8798834f1aa9eea83f9e16cdbd@67.207.152.121:80/8'
+sentry = Sentry(app)
+
 @app.before_request
 def before_request():
     try:
@@ -66,6 +69,8 @@ def foo():
         return "OK"
     except Exception as e:
 	print e
+	sentry.captureMessage("Hachiku ! WTF !")
+	sentry.captureException()
 	return "Not Ok"
 
 
