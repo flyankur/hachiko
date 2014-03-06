@@ -1,6 +1,6 @@
 '''
 Hachiko - A very simple continous integration app built on Flask
-https://github.com/flyankur/hachiko
+Fork Hachiko at https://github.com/flyankur/hachiko
 '''
 
 from raven.contrib.flask import Sentry
@@ -62,7 +62,7 @@ def foo():
 				file_to_execute = '/home/experiments/hachiku/sarjak.sh'
 			elif data['repository']['url'] == 'https://github.com/pixpa/pixpa.com':
 				file_to_execute = '/home/experiments/hachiku/pixpa.com.sh'
-                	with open(file_to_exectue):
+                	with open(file_to_execute):
                 		call([file_to_execute])
             	except IOError:
                 	raise Exception('Oh dear. You need to copy dummy deploye script in deploy_script folder ( eys.sh ) as deploy.sh in root folder')
