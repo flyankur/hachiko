@@ -1,6 +1,6 @@
 '''
 Hachiko - A very simple continous integration app built on Flask
-https://github.com/flyankur/hachiko
+Fork at https://github.com/flyankur/hachiko
 '''
 
 from raven.contrib.flask import Sentry
